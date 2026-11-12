@@ -63,3 +63,48 @@ class Ball(GameObject):
                 game_object.hit()
 
 
+class Paddle(GameObject):
+    def __init__(self, canvas, x, y):
+        self.width = 80
+        self.height = 10
+        self.ball = None
+        item = canvas.create_rectangle(
+            x - self.width / 2,
+            y - self.height / 2,
+            x + self.width / 2,
+            y + self.height / 2,
+            fill='#f1c40f',  # Kuning keemasan
+        )
+        super(Paddle, self).__init__(canvas, item)
+
+    def set_ball(self, ball):
+        self.ball = ball
+
+    def move(self, offset):
+        coords = self.get_position()
+        width = self.canvas.winfo_width()
+        if coords[0] + offset >= 0 and coords[2] + offset <= width:
+            super(Paddle, self).move(offset, 0)
+            if self.ball is not None:
+                self.ball.move(offset, 0)
+class Brick(GameObject):
+    # Warna blok kustom berdasarkan sisa hits (1: Pink, 2: Oranye, 3: Ungu)
+    COLORS = {1: '#ff7675', 2: '#fab1a0', 3: '#a29bfe'}
+
+    def __init__(self, canvas, x, y, hits, game):
+        self.width = 75
+        self.height = 20
+        self.hits = hits
+        self.game = game  # Referensi ke objek Game untuk menambah skor
+        color = Brick.COLORS[hits]
+        item = canvas.create_rectangle(
+            x - self.width / 2,
+            y - self.height / 2,
+            x + self.width / 2,
+            y + self.height / 2,
+            fill=color,
+            tags='brick',
+        )
+        super(Brick, self).__init__(canvas, item)
+
+   
