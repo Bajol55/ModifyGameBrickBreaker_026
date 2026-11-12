@@ -165,3 +165,33 @@ def add_brick(self, x, y, hits):
                   brick = Brick(self.canvas, x, y, hits, self)
                   self.items[brick.item] = brick
           
+def draw_text(self, x, y, text, size='40'):
+                  font = ('Arial', int(size), 'bold')
+                  return self.canvas.create_text(
+                      x, y, text=text, font=font, fill='white'
+                  )
+          
+def update_hud_text(self):
+                  lives_text = 'Lives: %s' % self.lives
+                  score_text = 'Score: %s' % self.score
+          
+                  if self.hud is None:
+                      self.hud = self.draw_text(60, 20, lives_text, 14)
+                  else:
+                      self.canvas.itemconfig(self.hud, text=lives_text)
+          
+                  if self.score_hud is None:
+                      self.score_hud = self.draw_text(540, 20, score_text, 14)
+                  else:
+                      self.canvas.itemconfig(self.score_hud, text=score_text)
+          
+def add_score(self, points):
+                  self.score += points
+                  self.update_hud_text()
+          
+def start_game(self):
+                  self.canvas.unbind('<space>')
+                  self.canvas.delete(self.text)
+                  self.paddle.ball = None
+                  self.game_loop()
+          
