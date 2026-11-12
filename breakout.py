@@ -107,4 +107,44 @@ class Brick(GameObject):
         )
         super(Brick, self).__init__(canvas, item)
 
+    def hit(self):
+           self.hits -= 1
+           # Tambah skor setiap kali brick terkena (misal: 10 poin per hit)
+           self.game.add_score(10)
    
+           if self.hits == 0:
+               self.delete()
+           else:
+               self.canvas.itemconfig(self.item, fill=Brick.COLORS[self.hits])
+   
+   
+class Game(tk.Frame):
+       def __init__(self, master):
+           super(Game, self).__init__(master)
+           self.lives = 3
+           self.score = 0
+           self.width = 610
+           self.height = 400
+           self.canvas = tk.Canvas(
+               self, bg='#2d3436', width=self.width, height=self.height
+           )  # Background agak gelap agar warna bola & blok lebih kontras
+           self.canvas.pack()
+           self.pack()
+   
+           self.items = {}
+           self.ball = None
+           self.paddle = Paddle(self.canvas, self.width / 2, 326)
+           self.items[self.paddle.item] = self.paddle
+           for x in range(5, self.width - 5, 75):
+               self.add_brick(x + 37.5, 50, 2)
+               self.add_brick(x + 37.5, 70, 1)
+               self.add_brick(x + 37.5, 90, 1)
+   
+           self.hud = None
+           self.score_hud = None
+           self.setup_game()
+           self.canvas.focus_set()
+           self.canvas.bind('<Left>', lambda _: self.paddle.move(-10))
+           self.canvas.bind('<Right>', lambda _: self.paddle.move(10))
+   
+       
