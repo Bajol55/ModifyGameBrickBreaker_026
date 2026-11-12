@@ -147,4 +147,21 @@ class Game(tk.Frame):
            self.canvas.bind('<Left>', lambda _: self.paddle.move(-10))
            self.canvas.bind('<Right>', lambda _: self.paddle.move(10))
    
-       
+       def setup_game(self):
+                  self.add_ball()
+                  self.update_hud_text()
+                  self.text = self.draw_text(300, 200, 'Press Space to start')
+                  self.canvas.bind('<space>', lambda _: self.start_game())
+          
+def add_ball(self):
+                  if self.ball is not None:
+                      self.ball.delete()
+                  paddle_coords = self.paddle.get_position()
+                  x = (paddle_coords[0] + paddle_coords[2]) * 0.5
+                  self.ball = Ball(self.canvas, x, 310)
+                  self.paddle.set_ball(self.ball)
+          
+def add_brick(self, x, y, hits):
+                  brick = Brick(self.canvas, x, y, hits, self)
+                  self.items[brick.item] = brick
+          
